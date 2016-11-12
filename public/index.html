@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html ng-app="tumblrapp">
+<head>
+  <meta charset="UTF-8">
+  <title>Tumblr Search App</title>
+  <script type="text/javascript" src="js/main.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+  <div ng-controller="MainController as Main">
+    <div class="container">
+      <section class="row">
+        <div class="col-md-6">
+          <div class="row">
+            <form ng-submit="searchTumblr()">
+              <div class="col-md-6">
+                <h1>Blog Name:</h1>
+                <input type="text" placeholder="Name of Tumblr Blog" ng-model="hostName" />
+              </div>
+              <div class="col-md-6">
+                <h1>Tag:</h1>
+                <input type="text" placeholder="Tag" ng-model="tag" />
+              </div>
+              <div>
+                <button class="btn btn-secondary pull-right submit-button" type="submit">Search</button>
+              </div>
+            </form>
+          </div>
+
+          <div class="row">
+            <ul class="list-group">
+              <li class="list-group-item posts" ng-repeat="post in posts">
+                <div class="fields">Blog Name:<button ng-click="addToFavorites($event, post)" class="btn btn-primary pull-right">Add</button></div> {{post.blog_name}}
+                <div class="fields">Summary: </div> {{post.summary}}
+                <div class="fields">Post URL:
+                  <a href={{post.post_url}}>Link to Tumblr Post</a>
+                </div>
+                <div class="thumbnail" ng-show="post.type === 'photo'">
+                  <img  ng-src={{post.photos[0].alt_sizes[2].url}}>
+                </div>
+                <span ng-show="post.type === 'video'">Click on Above link to view video</span>
+                <span ng-show="post.type === 'text'">{{post.body | removeHTMLTags}}</span>
+                <span ng-show="post.type === 'quote'">{{post.body | removeHTMLTags}}</span>
+                <span ng-show="post.type === 'chat'">{{post.body | removeHTMLTags}}</span>
+              </li>
+            </ul><!--closes list-group-->
+          </div><!--closes row-->
+        </div><!--closes col-md-6 left side-->
+      <div class="col-md-6">
+        <h1>Favorites:</h1>
+        <ul class="list-group">
+          <li class="list-group-item" ng-repeat="favorite in favorites">
+            <div class="fields">Blog Name: <button ng-click="removeFromFavorites($event,favorite)" class="btn btn-danger pull-right">Remove</button></div> {{favorite.blog_name}}
+            <div class="fields">Summary: </div> {{favorite.summary}}
+            <div class="fields">Post URL:
+              <a href={{favorite.post_url}}>Link to Tumblr Post</a>
+            </div>
+            <div class="thumbnail" ng-show="favorite.type === 'photo'">
+              <img  ng-src={{favorite.photos[0].alt_sizes[2].url}}>
+            </div>
+            <span ng-show="favorite.type === 'text'">{{favorite.body | removeHTMLTags}}</span>
+            <span ng-show="favorite.type === 'quote'">{{favorite.body | removeHTMLTags}}</span>
+            <span ng-show="favorite.type === 'chat'">{{favorite.body | removeHTMLTags}}</span>
+          </li>
+        </ul>
+      </div><!--closes favorite div-->
+    </section><!--closes section-->
+  </div><!--closes container-->
+</div><!--closes MainController-->
+
+</body>
+</html>
